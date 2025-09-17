@@ -1,0 +1,12 @@
+%dw 2.0
+
+type auto_e5451623_51fa_4007_b331_39903f90341a_Output_Payload = {
+  fileName: String, 
+  sizeInBytes?: Number, 
+  containerName: String, 
+  etag?: String, 
+  lastModified?: String, 
+  message: String, 
+  _?: Any
+}
+

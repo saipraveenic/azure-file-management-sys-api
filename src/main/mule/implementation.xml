@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:azure-storage="http://www.mulesoft.org/schema/mule/azure-storage"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/azure-storage http://www.mulesoft.org/schema/mule/azure-storage/current/mule-azure-storage.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="listAllContainers" doc:id="fca319ed-3081-4aa8-9ddf-55d64e53057d" >
+		<azure-storage:list-all-containers doc:name="List all containers" doc:id="f7259707-f73a-4c25-bc5a-699b5ceb7d2f" config-ref="Azure_Storage_Config" />
+		<ee:transform doc:name="Transform Message" doc:id="9b06583e-2c62-4665-a9ac-06143073463b" >
+			<ee:message >
+				<ee:set-payload resource="dwl\listContainer.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="uploadBlob" doc:id="e5451623-51fa-4007-b331-39903f90341a" >
+		<azure-storage:upload-blob doc:name="Upload blob" doc:id="63d37299-f54b-4b56-b244-064d5afbb321" config-ref="Azure_Storage_Config" contentType="#[payload.contentType]">
+			<azure-storage:storblob container="#[vars.containerName]" fileName="#[payload.fileName]" fileStream="#[payload.content]"/>
+		</azure-storage:upload-blob>
+		<ee:transform doc:name="Transform Message" doc:id="bf92a76f-1470-4109-a41d-44ae6160a515" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	payload: payload, 
+	attributes: attributes
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="downloadBlob" doc:id="6b5011f1-3b01-4f1a-aef2-683cd94b84e9" >
+		<azure-storage:download-blob doc:name="Download blob" doc:id="2392c909-5d1f-4c1c-a61f-775651a65298" config-ref="Azure_Storage_Config">
+			<azure-storage:blob container="#[vars.containerName]" fileName="#[vars.blogName]"/>
+		</azure-storage:download-blob>
+		<ee:transform doc:name="Transform Message" doc:id="52fb98f5-c98e-47c7-abc2-13d1ad93ca50">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+import toBase64 from dw::core::Binaries
+---
+{
+	payload: toBase64(payload)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="listBlobsInContainer" doc:id="01044b59-5b28-4f41-ac83-4a2888f5163d" >
+		<azure-storage:list-blobs-in-container doc:name="List blobs in container" doc:id="9a0abead-58b5-47ef-a550-e1f9ccedda4e" config-ref="Azure_Storage_Config" containerName="#[vars.containerName]" blobPath="#[attributes.queryParams.prefix]"/>
+		<ee:transform doc:name="Transform Message" doc:id="ab38620c-ec59-4eee-b59e-26ea4cfe97b2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map {
+    name: $.blobName, 
+    path: $.uri.path, 
+    lastModified: $.blobCreateDate
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="implementationFlow" doc:id="5c06887e-823a-4db5-b1f8-7efe21760383" >
+		<azure-storage:is-blob-exists doc:name="Is blob exists" doc:id="2afeb2a6-cce9-4cae-a530-e651a09f8dfc" config-ref="Azure_Storage_Config" containerName="#[vars.containerName]" blobName="#[vars.blogName]"/>
+		<ee:transform doc:name="Transform Message" doc:id="0743188e-36c5-4d1f-87e7-742004c969fa" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="deleteBlobImplementationFlow" doc:id="e51e23b7-4bfd-4788-8c4f-db669d50e0a6" >
+		<azure-storage:delete-blob doc:name="Delete blob" doc:id="ab104d22-c8f7-43a5-8c2a-eba7fb01b8a7" config-ref="Azure_Storage_Config">
+			<azure-storage:blob container="#[vars.containerName]" fileName="#[vars.blogName]"/>
+		</azure-storage:delete-blob>
+		<ee:transform doc:name="Transform Message" doc:id="f8222cdf-75bf-46a6-b73b-8ec141e90c78" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	payload: payload, 
+	attr: attributes
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:azure-storage="http://www.mulesoft.org/schema/mule/azure-storage" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/azure-storage http://www.mulesoft.org/schema/mule/azure-storage/current/mule-azure-storage.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    <http:listener-config name="azure-file-management-sys-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="azure-file-management-sys-api-config" api="resource::93944cb3-b768-4830-83e9-651211f276d4:azure-file-management-sys-api:1.0.2:raml:zip:azure-file-management-sys-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <azure-storage:config name="Azure_Storage_Config" doc:name="Azure Storage Config" doc:id="89d0e11a-dca5-42ae-92dd-910c3c69f6cb">
+        <azure-storage:access-key-azure-connection accountName="mulesoft040" accountKey="DefaultEndpointsProtocol=https;AccountName=mulesoft040;AccountKey=tFJP5NCkalOSTqCDq0v+T9dL3UKVoBxn5nVVQw5H6UTVZz6U7pyDDxVyDCUpk6iF6qp1bPfJ1oqC+AStJKEguQ==;EndpointSuffix=core.windows.net" />
+    </azure-storage:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="54d5c70c-1b03-44b4-b6a3-a64f978ff97f" file="config.yaml" />
+</mule>

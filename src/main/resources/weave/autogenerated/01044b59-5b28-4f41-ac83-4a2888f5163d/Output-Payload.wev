@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_01044b59_5b28_4f41_ac83_4a2888f5163d_Output_Payload = Array<{  sizeInBytes?: Number,   name: String,   etag?: String,   lastModified?: String,   contentType?: String,   _?: Any}>
+

@@ -1,0 +1,36 @@
+%dw 2.0
+
+type auto_fca319ed_3081_4aa8_9ddf_55d64e53057d_Output_Payload = Array<org_mule_modules_azurestorageservice_api_outputentity_BlobContainer {"typeId": "org.mule.modules.azurestorageservice.api.outputentity.BlobContainer",
+"typeAlias": "BlobContainer"}>
+type org_mule_modules_azurestorageservice_api_outputentity_BlobContainer = {|
+  containerName?: String, 
+  containerURI?: java_net_URI {"typeId": "java.net.URI",
+  "typeAlias": "URI"}, 
+  metadata?: { _?: String }
+|} {"typeId": "org.mule.modules.azurestorageservice.api.outputentity.BlobContainer",
+"typeAlias": "BlobContainer"}
+type java_net_URI = {|
+  absolute?: Boolean {"typeId": "boolean"}, 
+  authority?: String, 
+  fragment?: String, 
+  host?: String, 
+  opaque?: Boolean {"typeId": "boolean"}, 
+  path?: String, 
+  port?: Number, 
+  query?: String, 
+  rawAuthority?: String, 
+  rawFragment?: String, 
+  rawPath?: String, 
+  rawQuery?: String, 
+  rawSchemeSpecificPart?: String, 
+  rawUserInfo?: String, 
+  scheme?: String, 
+  schemeSpecificPart?: String, 
+  userInfo?: String
+|} {"typeId": "java.net.URI",
+"typeAlias": "URI"}
+
+
+
+
+

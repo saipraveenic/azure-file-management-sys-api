@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_6b5011f1_3b01_4f1a_aef2_683cd94b84e9_Output_Variables_outboundHeaders = {| "content-disposition": String |}
+

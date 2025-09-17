@@ -1,0 +1,9 @@
+%dw 2.0
+
+type auto_e5451623_51fa_4007_b331_39903f90341a_Input_Payload = {
+  fileName: String, 
+  contentType: String, 
+  content: String, 
+  _?: Any
+}
+
